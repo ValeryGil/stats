@@ -15,12 +15,9 @@ public class StatsService {
 
     // Средняя величина продаж в месяц
     public int averageSales(long[] sales) {
-        int averageSalesMonths = 0;
-
-        for (int i = 0; i < sales.length; i++) {
-            averageSalesMonths += sales[i]; // сумма всех продаж
-        }
-        return averageSalesMonths / sales.length; // среднее значение продаж;
+        int sumSalesMonths = sumSales(sales); // вызывает метод суммы всех продаж
+        int averageSalesMonths = sumSalesMonths / sales.length; // среднее значение продаж;
+        return averageSalesMonths;
     }
 
     // Месяц с максимальными продажами
@@ -49,13 +46,11 @@ public class StatsService {
 
     // Количество месяцев, в которых продажи были выше среднего
     public int countMonthsHigherAverageSales(long[] sales) {
+        int averageSalesMonths = averageSales(sales); // вызывает метод расчета среднего значения
         int countMonths = 0;
 
-        OptionalLong sum = Arrays.stream(sales).reduce((x, y) -> x + y); // сумма всех продаж
-        long average = (sum.getAsLong()) / sales.length; // расчет среднего значения
-
         for (int i = 0; i < sales.length; i++) {
-            if (sales[i] > average) {
+            if (sales[i] > averageSalesMonths) {
                 countMonths += 1; // увеличения счетчика месяцев
             }
         }
@@ -64,13 +59,11 @@ public class StatsService {
 
     // Количество месяцев, в которых продажи были ниже среднего
     public int countMonthsLowerAverageSales(long[] sales) {
+        int averageSalesMonths = averageSales(sales); // вызывает метод расчета среднего значения
         int countMonths = 0;
 
-        OptionalLong sum = Arrays.stream(sales).reduce((x, y) -> x + y); // сумма всех продаж
-        long average = (sum.getAsLong()) / sales.length; // расчет среднего значения
-
         for (int i = 0; i < sales.length; i++) {
-            if (sales[i] < average) {
+            if (sales[i] < averageSalesMonths) {
                 countMonths += 1; // увеличения счетчика месяцев
             }
         }
